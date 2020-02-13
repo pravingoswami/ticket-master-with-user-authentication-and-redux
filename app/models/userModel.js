@@ -100,10 +100,10 @@ userSchema.statics.findByCredentials = function(data, password){
     return User.findOne(find)
         .then(User => {
             if(!User){
-                return Promise.reject({errors : 'invalid email id'})
+                return Promise.reject({errors : 'invalid email id or password'})
             }
             return bcryptjs.compare(password, User.password)
-                        .then(result => result ? Promise.resolve(User) : Promise.reject({errors : 'invalid password'}))
+                        .then(result => result ? Promise.resolve(User) : Promise.reject({errors : 'invalid email id or password'}))
                         .catch(err => Promise.reject(err))
         })
 
