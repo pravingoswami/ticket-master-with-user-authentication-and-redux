@@ -8,7 +8,7 @@ module.exports.list = (req, res) => {
 }
 
 module.exports.create = (req, res) => {
-    const body = req.body
+    const body = pick(req.body ,  ['name', 'code', 'mobile', 'email'])
     const customer = new Customer(body)
     customer.user = req.user._id
     customer.save()
@@ -24,7 +24,7 @@ module.exports.show = (req, res) => {
 }
 
 module.exports.update = (req, res) => {
-    Customer.findOneAndUpdate({_id : req.params.id, user : req.user._id}, req.body, {runValidators : true, new : true})
+    Customer.findOneAndUpdate({_id : req.params.id, user : req.user._id}, pick(req.body ,  ['name', 'code', 'mobile', 'email']), {runValidators : true, new : true})
         .then(customer => customer ? res.send(pick(customer ,  ['_id', 'name', 'code', 'mobile', 'email'])) : res.json({}))
         .catch(err => res.json(err))
 }
